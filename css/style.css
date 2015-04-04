@@ -1,3 +1,63 @@
 body {
     text-align: center;
 }
+ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+#menu.main {
+ 	background-color: #333;
+}
+.visible {
+	display: block;
+}
+#menu li{
+	display: inline-flex;
+	border: 4px rgb(231, 21, 123) ridge;
+	background: #fff;
+}
+
+#menu li:hover{
+	border: 4px rgb(231, 21, 123) groove;
+}
+
+#main {
+	display: none;
+	height: 60%;
+	overflow: auto;
+	margin: auto;
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+#main h1 {
+	color: white;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.end {
+	display:none;
+}
+.button {
+	display: block;
+	width: 30%;
+	margin: 0 auto;
+	height: 136%;
+	line-height: 440%;
+	border: 1px solid #AA2666;
+	color: white;
+	font-weight: bold;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	background-color: #FB1886;
+	background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
+	background-image: linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+	border-radius: 5px;
+	font-size: 24px;
+}
+.button:hover {
+	background-color: #B30D5D;
+	background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
+	background-image:         linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
+}

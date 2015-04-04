@@ -1,11 +1,102 @@
+// Boolan value to determine if the player is alive or not
+avatar = [
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-princess-girl.png'
+        ];
+//Decalring Movements steps variables.
+player_move_x = 101;
+player_move_y = 85;
+// Setting Y and X coordinates for our canvas grid. 
+var co_y = [125,205,290,370];
+var co_x = [1, 101, 202, 303, 404, 505, 606, 707];   
+
+// Setting the different speed levels of enemies
+var enemySpeed = [];
+function gameLevel(a, b) {
+    for (var i = a; i  < b; i = i + 15) {
+        enemySpeed.push(i);
+    }
+    console.log(enemySpeed);
+    return enemySpeed;
+}
+
+// Declaring the variable numOfGems which will count the gems collected by player. 
+var numOfGems = 0;
+// The number of enenmies in the game.
+var numOfEnemies = 5;
+
+// A function that returns a random value from an input array.
+randomizer = function(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+//This function is going to collect the gems and increase game difficulty/speed accordingly.
+function collectGem() {
+    numOfGems = numOfGems +1;
+    console.log(numOfGems);
+    if (numOfGems < 5) {
+        gem.resetPosition();
+    }
+    else if (numOfGems < 10) {
+        gem.resetPosition();
+        gameLevel(400, 600);
+    }
+    else if (numOfGems < 15) {
+        gem.resetPosition();
+        gameLevel(600, 800);
+    }
+    else if (numOfGems < 20) {
+        gem.resetPosition();
+        gameLevel(800, 1000);
+    }
+    else {
+        gem.hide();
+    }   
+}
+// A function to reset the game once the new game button is clicked.
+function resetGame() {
+    numOfGems = 0;
+    allEnemies = [];
+    enemySpeed = [];
+    gameLevel(100, 400);
+    createEnemies(numOfEnemies);
+    player.x = 0;
+    player.y = 460;
+    gem.x = randomizer(co_x);
+    gem.y = randomizer(co_y);
+    playerIsAlive = true;
+}
+// Gems that our player will collect to win the game!
+var Gem = function() {
+    this.sprite = 'images/orange.png';
+    this.x = randomizer(co_x);
+    this.y = randomizer(co_y);
+}
+
+Gem.prototype.update = function(dt) {
+    
+}
+Gem.prototype.resetPosition = function() {
+    this.x = randomizer(co_x);
+    this.y = randomizer(co_y);
+}
+Gem.prototype.hide = function() {
+    this.x = -1000;
+    this.y = -1000;
+}
+
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.x = -20; // enemies starts moving from the left side of the canvas.
+    this.y = randomizer(co_y);
+    this.speed = randomizer(enemySpeed);
 }
 
 // Update the enemy's position, required method for game
@@ -14,6 +105,12 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if (this.x > 808) {
+        this.x = -100;
+        this.y = randomizer(co_y);
+        this.speed = randomizer(enemySpeed);
+    }
+    this.x = this.x + this.speed * dt; 
 }
 
 // Draw the enemy on the screen, required method for game
@@ -21,15 +118,94 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Declaring our Player call.
+var Player = function() {
+    this.sprite = 'images/char-cat-girl.png'; // Default Avatar to load the player!
+    //Intiail poisiton of the created player 
+    this.x = 0;
+    this.y = 460;
+}
 
+Player.prototype.update = function(dt) {
+    this.x * dt;
+    this.y * dt;
+}
+// A method called when the player is dead.
+Player.prototype.killed = function(dt) {
+    playerIsAlive = false;
+    top_score = numOfGems;
+    allEnemies.forEach(function(enemy) {
+        enemy.speed = 0;
+        });
+   mainMenu();
+}
+
+Player.prototype.handleInput = function(key) {
+    if (playerIsAlive) {
+        switch(key) {
+        case "up":
+            if (this.y > 150) { 
+                this.y = this.y - player_move_y;
+            }
+            else {
+               //Player is at the top of the canvas then don't move him 
+            }
+            break;
+        case "down":
+            if (this.y > 400) {
+                // Don't Move
+            }
+            else {
+                this.y = this.y + player_move_y; 
+            }
+            break;
+        case "left":
+            if (this.x > 0) {
+                this.x = this.x - player_move_x;
+            }
+            else {
+                this.x = 700;
+            }
+            break;
+        case "right":
+            if (this.x > 610) {
+               this.x = 0;
+            }
+            else {
+                this.x = this.x + player_move_x;
+            }
+            break;
+        case "space":
+            resetGame();
+         }
+    }
+    else {
+        // Do nothing!
+    }
+}
+
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+// createEnemies() is Function that instantiates Multiple enmeies depending on the level
+// And push them to the allEnemies Array.
+// Parameter a is the number of enemies, that could be set when calling the function.
+var allEnemies = [];
+function createEnemies(a) {
+    for (i = 0; i < a; i++) {
+        var enemy = new Enemy();
+        allEnemies.push(enemy);
+    }
+}
 
+// instantiate our objects.
+var player = new Player();
+var gem = new Gem();
+createEnemies(numOfEnemies);
 
 
 // This listens for key presses and sends the keys to your
@@ -39,8 +215,58 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32: 'space',
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+});
+
+/**
+ * Load the main menu
+ */
+
+/**
+ * Show the main menu after loading all assets
+ */
+function mainMenu() {
+  $('#main').show(); 
+  $('#end').hide();
+}
+function setAvatar(index){
+    player.sprite = avatar[index];
+}
+/**
+ * Click handlers for the  menu screens
+ */
+$('.boy').click(function() {
+    console.log("Boy Selected");
+    setAvatar(0);
+    resetGame();
+  $('#main').hide();
+});
+$('.cat').click(function() {
+    setAvatar(1);
+    resetGame();
+  $('#main').hide();
+});
+$('.pink').click(function() {
+    setAvatar(2);
+    resetGame();
+  $('#main').hide();
+});
+$('.horn').click(function() {
+    setAvatar(3);
+    resetGame();
+  $('#main').hide();
+});
+$('.princess').click(function() {
+    setAvatar(4);
+    resetGame();
+  $('#main').hide();
+});
+
+$('.play').click(function() {
+  resetGame();
+  $('#end').hide(); 
 });
