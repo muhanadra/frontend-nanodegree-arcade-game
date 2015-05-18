@@ -7,14 +7,16 @@ avatar = [
         'images/char-princess-girl.png'
         ];
 
-//The length of the steps the player take with each key stroke.
+// The length of the steps the player take with each key stroke.
 player_move_x = 101;
 player_move_y = 85;
 
 // Setting Y and X coordinates for our canvas grid. 
 var co_y = [125,205,290,370];
-var co_x = [1, 101, 202, 303, 404, 505, 606, 707];   
+var co_x = [1, 101, 202, 303, 404, 505, 606, 707];
 
+// New Game Boolean
+newGame = true;
 // Setting the different speed levels of enemies
 var enemySpeed = [];
 function gameLevel(a, b) {
@@ -27,6 +29,7 @@ function gameLevel(a, b) {
 
 // Declaring the variable numOfGems which will hold the number of gems collected by the player. 
 var numOfGems = 0;
+var highScore = localStorage.getItem('highScore') || 0;
 
 // The number of enemies in the game, you can change this to change the difficuilty of the game.
 var numOfEnemies = 5;
@@ -38,7 +41,11 @@ randomizer = function(array) {
 
 //This function is going to collect the gems and increase game difficulty/speed accordingly.
 function collectGem() {
-    numOfGems = numOfGems +1;
+    numOfGems = numOfGems + 1;
+    if (numOfGems > highScore) {
+        highScore = numOfGems;
+        localStorage.setItem('highScore', highScore);
+    }
     console.log(numOfGems);
     if (numOfGems < 5) {
         gem.resetPosition();
@@ -54,7 +61,7 @@ function collectGem() {
     else if (numOfGems < 20) {
         gem.resetPosition();
         gameLevel(800, 1000);
-        
+
     }
     else {
         gem.resetPosition();
@@ -122,7 +129,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Declaring our Player call.
+// Declaring our Player class.
 var Player = function() {
     this.sprite = 'images/char-cat-girl.png'; // Default Avatar to load the player!
     //Intiail poisiton of the created player 
@@ -141,7 +148,7 @@ Player.prototype.killed = function(dt) {
     allEnemies.forEach(function(enemy) {
         enemy.speed = 0;
         });
-   mainMenu();
+    showMenu();
 }
 
 Player.prototype.handleInput = function(key) {
@@ -233,11 +240,17 @@ document.addEventListener('keyup', function(e) {
 /**
  * Show the main menu after loading all assets
  */
-function mainMenu() {
-  $('#main').show(); 
-  $('#end').hide();
+function showMenu() {
+        if(newGame) {
+            $('#main').show();
+        }
+        else {
+            $('#end').show();
+        }
+        
 }
 function setAvatar(index){
+    newGame = false;
     player.sprite = avatar[index];
 }
 /**
@@ -273,4 +286,9 @@ $('.princess').click(function() {
 $('.play').click(function() {
   resetGame();
   $('#end').hide(); 
+});
+$('.select').click(function() {
+    newGame = true;
+    $('#end').hide();
+    showMenu(); 
 });

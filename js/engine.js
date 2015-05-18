@@ -104,15 +104,12 @@ var Engine = (function(global) {
             if (checkCollisions(player, enemy)) {
                 enemy.speed = 0;
                 player.killed();
-                //console.log("you got killed!");
-                // mainMenu();
             }
         });
 
         player.update();
         if (checkCollisions(player, gem)) {
             collectGem();
-            //console.log("you got one gem");
         }
     }
 
@@ -164,9 +161,10 @@ var Engine = (function(global) {
      * on your enemy and player entities within app.js
      */
     function updateScore() {
-        ctx.clearRect(18,20,50,25); // A small white box that clear the previous number from the canvas
+        ctx.clearRect(18,20,800,25); // A small white box that clear the previous number from the canvas
         ctx.font = "32px serif"; // Setting the font settings
-        ctx.fillText(numOfGems, 22, 42); // Drawing the Score numOfGems in the canvas top right corner
+        ctx.fillText("Score: " + numOfGems, 22, 42); // Drawing the Score numOfGems in the canvas top right corner
+        ctx.fillText("Top Score: " + highScore, 622, 42);
     }
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
