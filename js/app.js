@@ -1,4 +1,4 @@
-// Boolan value to determine if the player is alive or not
+// An Array that hold the different avatars for our player to choose from
 avatar = [
         'images/char-boy.png',
         'images/char-cat-girl.png',
@@ -6,9 +6,11 @@ avatar = [
         'images/char-horn-girl.png',
         'images/char-princess-girl.png'
         ];
-//Decalring Movements steps variables.
+
+//The length of the steps the player take with each key stroke.
 player_move_x = 101;
 player_move_y = 85;
+
 // Setting Y and X coordinates for our canvas grid. 
 var co_y = [125,205,290,370];
 var co_x = [1, 101, 202, 303, 404, 505, 606, 707];   
@@ -23,12 +25,13 @@ function gameLevel(a, b) {
     return enemySpeed;
 }
 
-// Declaring the variable numOfGems which will count the gems collected by player. 
+// Declaring the variable numOfGems which will hold the number of gems collected by the player. 
 var numOfGems = 0;
-// The number of enenmies in the game.
+
+// The number of enemies in the game, you can change this to change the difficuilty of the game.
 var numOfEnemies = 5;
 
-// A function that returns a random value from an input array.
+// A function that returns a random value from an array.
 randomizer = function(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
@@ -51,9 +54,10 @@ function collectGem() {
     else if (numOfGems < 20) {
         gem.resetPosition();
         gameLevel(800, 1000);
+        
     }
     else {
-        gem.hide();
+        gem.resetPosition();
     }   
 }
 // A function to reset the game once the new game button is clicked.
