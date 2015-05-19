@@ -20,6 +20,7 @@ var co_x = [1, 101, 202, 303, 404, 505, 606, 707];
 // New Game Boolean
 var newGame = true;
 var playerIsAlive = true;
+var avatarIndex;
 
 // Setting the different speed levels of enemies
 var enemySpeed = [];
@@ -27,7 +28,6 @@ function gameLevel(a, b) {
     for (var i = a; i  < b; i = i + 15) {
         enemySpeed.push(i);
     }
-    console.log(enemySpeed);
     return enemySpeed;
 }
 
@@ -50,7 +50,6 @@ function collectGem() {
         highScore = numOfGems;
         localStorage.setItem('highScore', highScore);
     }
-    console.log(numOfGems);
     if (numOfGems < 5) {
         gem.resetPosition();
     }
@@ -89,30 +88,30 @@ var Gem = function() {
     this.sprite = 'images/orange.png';
     this.x = randomizer(co_x);
     this.y = randomizer(co_y);
-}
+};
 
 Gem.prototype.update = function(dt) {
     
-}
+};
 Gem.prototype.resetPosition = function() {
     this.x = randomizer(co_x);
     this.y = randomizer(co_y);
-}
+};
 Gem.prototype.hide = function() {
     this.x = -1000;
     this.y = -1000;
-}
+};
 
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 // Enemies our player must avoid
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.x = -20; // enemies starts moving from the left side of the canvas.
     this.y = randomizer(co_y);
     this.speed = randomizer(enemySpeed);
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -126,12 +125,12 @@ Enemy.prototype.update = function(dt) {
         this.speed = randomizer(enemySpeed);
     }
     this.x = this.x + this.speed * dt; 
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Declaring our Player class.
 var Player = function() {
@@ -139,12 +138,12 @@ var Player = function() {
     //Intiail poisiton of the created player 
     this.x = 0;
     this.y = 460;
-}
+};
 
 Player.prototype.update = function(dt) {
     this.x * dt;
     this.y * dt;
-}
+};
 // A method called when the player is dead.
 Player.prototype.killed = function(dt) {
     playerIsAlive = false;
@@ -152,6 +151,17 @@ Player.prototype.killed = function(dt) {
         enemy.speed = 0;
         });
     showMenu();
+};
+
+function StepIntoWater(self) {
+    numOfGems = numOfGems - 1;
+    self.y = self.y - player_move_y + 10;
+    if (numOfGems < 0) {
+        player.killed();
+    }
+    else {
+       self.y = 460; 
+    }
 }
 
 Player.prototype.handleInput = function(key) {
@@ -162,7 +172,8 @@ Player.prototype.handleInput = function(key) {
                 this.y = this.y - player_move_y;
             }
             else {
-               //Player is at the top of the canvas then don't move him 
+               //Player is Going to step into the water, which should send them into water and lose them one Gem
+               StepIntoWater(this);
             }
             break;
         case "down":
@@ -196,11 +207,11 @@ Player.prototype.handleInput = function(key) {
     else {
         // Do nothing!
     }
-}
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -249,18 +260,19 @@ function showMenu() {
         }
         else {
             $('#end').show();
-        }
-        
+        }     
 }
+
+// A function so the player can select his favorite avatar
 function setAvatar(index){
     newGame = false;
+    avatarIndex = index;
     player.sprite = avatar[index];
 }
 /**
  * Click handlers for the  menu screens
  */
 $('.boy').click(function() {
-    console.log("Boy Selected");
     setAvatar(0);
     resetGame();
   $('#main').hide();

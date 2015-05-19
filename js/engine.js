@@ -57,7 +57,7 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         win.requestAnimationFrame(main);
-    };
+    }
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
@@ -86,7 +86,6 @@ var Engine = (function(global) {
     function checkCollisions(obj1, obj2) {
         var proximity = 50;
         if (Math.abs(obj1.x - obj2.x) < proximity && Math.abs(obj1.y - obj2.y) < proximity) {
-            //console.log("There is a collision!");
             return true;
         }
     }
