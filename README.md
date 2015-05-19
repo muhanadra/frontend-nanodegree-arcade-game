@@ -11,4 +11,4 @@ Click  [this link!](http://neo0rabie.github.io/frontend-nanodegree-arcade-game/)
 
 ** Tip ** Be careful when approaching gems in the first right col as it's harder to see the bugs coming. Also at any given time there's only 5 evil bugs so lookout for them.
 
-This Game was created by with the help of the lovely people of Udacity as part of the nano-degree program. 
+This Game was created by with the help of the lovely people of Udacity as part of their nano-degree program. 
