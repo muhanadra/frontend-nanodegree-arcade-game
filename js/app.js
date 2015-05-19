@@ -1,5 +1,7 @@
+// Use Strict Mode
+'use strict';
 // An Array that hold the different avatars for our player to choose from
-avatar = [
+var avatar = [
         'images/char-boy.png',
         'images/char-cat-girl.png',
         'images/char-pink-girl.png',
@@ -8,15 +10,17 @@ avatar = [
         ];
 
 // The length of the steps the player take with each key stroke.
-player_move_x = 101;
-player_move_y = 85;
+var player_move_x = 101;
+var player_move_y = 85;
 
 // Setting Y and X coordinates for our canvas grid. 
 var co_y = [125,205,290,370];
 var co_x = [1, 101, 202, 303, 404, 505, 606, 707];
 
 // New Game Boolean
-newGame = true;
+var newGame = true;
+var playerIsAlive = true;
+
 // Setting the different speed levels of enemies
 var enemySpeed = [];
 function gameLevel(a, b) {
@@ -35,7 +39,7 @@ var highScore = localStorage.getItem('highScore') || 0;
 var numOfEnemies = 5;
 
 // A function that returns a random value from an array.
-randomizer = function(array) {
+function randomizer(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
@@ -144,7 +148,6 @@ Player.prototype.update = function(dt) {
 // A method called when the player is dead.
 Player.prototype.killed = function(dt) {
     playerIsAlive = false;
-    top_score = numOfGems;
     allEnemies.forEach(function(enemy) {
         enemy.speed = 0;
         });
@@ -207,7 +210,7 @@ Player.prototype.render = function() {
 // Parameter a is the number of enemies, that could be set when calling the function.
 var allEnemies = [];
 function createEnemies(a) {
-    for (i = 0; i < a; i++) {
+    for (var i = 0; i < a; i++) {
         var enemy = new Enemy();
         allEnemies.push(enemy);
     }
