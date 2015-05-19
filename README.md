@@ -1,6 +1,6 @@
 frontend-nanodegree-arcade-game
 ===============================
-Click  [this link!](http://neo0rabie.github.com/frontend-nanodegree-arcade-game) to play the game or go to neo0rabie.github.com/frontend-nanodegree-arcade-game
+Click  [this link!](http://neo0rabie.github.io/frontend-nanodegree-arcade-game/) to play the game or go to neo0rabie.github.com/frontend-nanodegree-arcade-game
 
 - Choose your favorite Avatar.
 - Move Using the keyboard arrows, space to restart the game.
