@@ -80,7 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        
+
     }
 
     function checkCollisions(obj1, obj2) {

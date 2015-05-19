@@ -13,7 +13,7 @@ var avatar = [
 var player_move_x = 101;
 var player_move_y = 85;
 
-// Setting Y and X coordinates for our canvas grid. 
+// Setting Y and X coordinates for our canvas grid.
 var co_y = [125,205,290,370];
 var co_x = [1, 101, 202, 303, 404, 505, 606, 707];
 
@@ -31,7 +31,7 @@ function gameLevel(a, b) {
     return enemySpeed;
 }
 
-// Declaring the variable numOfGems which will hold the number of gems collected by the player. 
+// Declaring the variable numOfGems which will hold the number of gems collected by the player.
 var numOfGems = 0;
 var highScore = localStorage.getItem('highScore') || 0;
 
@@ -68,7 +68,7 @@ function collectGem() {
     }
     else {
         gem.resetPosition();
-    }   
+    }
 }
 // A function to reset the game once the new game button is clicked.
 function resetGame() {
@@ -91,7 +91,7 @@ var Gem = function() {
 };
 
 Gem.prototype.update = function(dt) {
-    
+
 };
 Gem.prototype.resetPosition = function() {
     this.x = randomizer(co_x);
@@ -124,7 +124,7 @@ Enemy.prototype.update = function(dt) {
         this.y = randomizer(co_y);
         this.speed = randomizer(enemySpeed);
     }
-    this.x = this.x + this.speed * dt; 
+    this.x = this.x + this.speed * dt;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -135,7 +135,7 @@ Enemy.prototype.render = function() {
 // Declaring our Player class.
 var Player = function() {
     this.sprite = 'images/char-cat-girl.png'; // Default Avatar to load the player!
-    //Intiail poisiton of the created player 
+    //Intiail poisiton of the created player
     this.x = 0;
     this.y = 460;
 };
@@ -160,7 +160,7 @@ function StepIntoWater(self) {
         player.killed();
     }
     else {
-       self.y = 460; 
+       self.y = 460;
     }
 }
 
@@ -168,7 +168,7 @@ Player.prototype.handleInput = function(key) {
     if (playerIsAlive) {
         switch(key) {
         case "up":
-            if (this.y > 150) { 
+            if (this.y > 150) {
                 this.y = this.y - player_move_y;
             }
             else {
@@ -181,7 +181,7 @@ Player.prototype.handleInput = function(key) {
                 // Don't Move
             }
             else {
-                this.y = this.y + player_move_y; 
+                this.y = this.y + player_move_y;
             }
             break;
         case "left":
@@ -260,7 +260,7 @@ function showMenu() {
         }
         else {
             $('#end').show();
-        }     
+        }
 }
 
 // A function so the player can select his favorite avatar
@@ -300,10 +300,10 @@ $('.princess').click(function() {
 
 $('.play').click(function() {
   resetGame();
-  $('#end').hide(); 
+  $('#end').hide();
 });
 $('.select').click(function() {
     newGame = true;
     $('#end').hide();
-    showMenu(); 
+    showMenu();
 });
